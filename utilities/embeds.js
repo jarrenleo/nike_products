@@ -94,6 +94,7 @@ export const calendarEmbed = (data) => {
         },
         ...embedFields,
       ],
+      timestamp: new Date(Date.now()).toISOString(),
     },
   ];
 };
