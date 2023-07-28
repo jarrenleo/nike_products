@@ -63,10 +63,7 @@ export class CalendarData {
         : upcomingProducts[key].push(value);
     }
 
-    const t = upcomingProducts;
-    upcomingProducts = {};
-
-    return t;
+    return upcomingProducts;
   }
 
   generateEmbedFields(upcomingProducts) {
@@ -93,10 +90,7 @@ export class CalendarData {
       );
     }
 
-    const t = embedFields;
-    embedFields = [];
-
-    return t;
+    return embedFields;
   }
 
   async getCalendarData(country) {

@@ -30,6 +30,9 @@ export class Product extends ProductData {
       m.reply({
         embeds: embed,
         components: refreshButton,
+        allowedMentions: {
+          repliedUser: false,
+        },
       });
     } catch (e) {
       this.sendError(m, e.message);

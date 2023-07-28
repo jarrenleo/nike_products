@@ -16,7 +16,10 @@ export const getNikeCalendarData = async (url, calendarData = []) => {
   calendarData.push(...data.objects);
 
   if (data.pages.next)
-    return await getNikeCalendarData(`https://api.nike.com${data.pages.next}`);
+    return await getNikeCalendarData(
+      `https://api.nike.com${data.pages.next}`,
+      calendarData
+    );
 
   return calendarData;
 };

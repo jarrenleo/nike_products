@@ -21,6 +21,9 @@ export class Calendar extends CalendarData {
 
       m.reply({
         embeds: embed,
+        allowedMentions: {
+          repliedUser: false,
+        },
       });
     } catch (e) {
       this.sendError(m, e.message);
