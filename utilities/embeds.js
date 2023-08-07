@@ -1,21 +1,19 @@
-export const productEmbed = (data) => {
-  const [
-    name,
-    url,
-    image,
-    status,
-    method,
-    cartLimit,
-    sku,
-    country,
-    price,
-    colourway,
-    launchDateAndTime,
-    sizesAndStockLevels,
-    links,
-    promotion,
-  ] = data;
-
+export const productEmbed = ([
+  name,
+  url,
+  image,
+  status,
+  method,
+  cartLimit,
+  sku,
+  country,
+  price,
+  colourway,
+  launchDateAndTime,
+  sizesAndStockLevels,
+  links,
+  promotion,
+]) => {
   return [
     {
       color: 0x868e96,
@@ -80,9 +78,7 @@ export const productEmbed = (data) => {
   ];
 };
 
-export const calendarEmbed = (data) => {
-  const [country, embedFields] = data;
-
+export const calendarEmbed = ([country, embedFields]) => {
   return [
     {
       color: 0x868e96,
