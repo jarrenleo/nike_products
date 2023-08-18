@@ -45,7 +45,7 @@ export class Product extends ProductData {
 
       interaction.editReply({
         embeds: embed,
-        componentns: refreshButton,
+        components: refreshButton,
       });
     } catch (e) {
       interaction.editReply({

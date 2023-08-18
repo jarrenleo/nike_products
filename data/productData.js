@@ -85,24 +85,25 @@ export class ProductData {
 
     const sizesAndStockLevels = [];
     const metric = type === "FOOTWEAR" ? "US" : "";
-    const splitCount = Math.ceil(skus.length / 2);
+    const gtinMap = new Map();
 
-    for (let i = 0; i < skus.length; ++i) {
-      for (let j = 0; j < gtins.length; ++j) {
-        if (skus[i].gtin === gtins[j].gtin) {
-          const level = gtins[j].level;
-          sizesAndStockLevels.push(
-            `${metric}${skus[i].nikeSize} (${level}) ${this.getIndicator(
-              level
-            )}`
-          );
-          break;
-        }
-
-        if (j === gtins.length - 1)
-          sizesAndStockLevels.push(`${metric}${skus[i].nikeSize} (OOS) 🔴`);
-      }
+    for (const gtin of gtins) {
+      gtinMap.set(gtin.gtin, gtin);
     }
+
+    for (const sku of skus) {
+      const matchedGtin = gtinMap.get(sku.gtin);
+
+      matchedGtin
+        ? sizesAndStockLevels.push(
+            `${metric}${sku.nikeSize} (${
+              matchedGtin.level
+            }) ${this.getIndicator(matchedGtin.level)}`
+          )
+        : sizesAndStockLevels.push(`${metric}${skus[i].nikeSize} (OOS) 🔴`);
+    }
+
+    const splitCount = Math.ceil(skus.length / 2);
 
     return [
       {
