@@ -11,7 +11,7 @@ class Discord {
   constructor() {
     this.discord = this.initDiscord();
     this.handleMessage();
-    this.handleButtonInteraction();
+    // this.handleButtonInteraction();
   }
 
   initDiscord() {
@@ -44,9 +44,6 @@ class Discord {
 
   handleMessage() {
     this.discord.on(Events.MessageCreate, async (m) => {
-      if (!m.content.startsWith("!nike") || !m.content.startsWith("!calendar"))
-        return;
-
       if (m.content.startsWith("!nike")) {
         const [skus, countries] = this.getParams(
           m.content.slice(5).trimStart()
