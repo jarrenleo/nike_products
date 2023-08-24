@@ -100,7 +100,7 @@ export class ProductData {
               matchedGtin.level
             }) ${this.getIndicator(matchedGtin.level)}`
           )
-        : sizesAndStockLevels.push(`${metric}${skus[i].nikeSize} (OOS) 🔴`);
+        : sizesAndStockLevels.push(`${metric}${sku.nikeSize} (OOS) 🔴`);
     }
 
     const splitCount = Math.ceil(skus.length / 2);
