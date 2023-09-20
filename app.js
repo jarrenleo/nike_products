@@ -11,7 +11,6 @@ class Discord {
   constructor() {
     this.discord = this.initDiscord();
     this.handleMessage();
-    // this.handleButtonInteraction();
   }
 
   initDiscord() {
@@ -57,15 +56,6 @@ class Discord {
 
         await this.calendar.handleMessage(m, countries);
       }
-    });
-  }
-
-  handleButtonInteraction() {
-    this.discord.on(Events.InteractionCreate, async (interaction) => {
-      if (!interaction.isButton()) return;
-      await interaction.deferUpdate();
-
-      await this.product.handleInteraction(interaction);
     });
   }
 }
