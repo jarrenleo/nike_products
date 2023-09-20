@@ -1,6 +1,5 @@
 import { ProductData } from "../data/productData.js";
 import { productEmbed } from "../utilities/embeds.js";
-import { refreshButton } from "../utilities/components.js";
 
 export class Product extends ProductData {
   constructor() {
@@ -29,7 +28,6 @@ export class Product extends ProductData {
 
       m.reply({
         embeds: embed,
-        components: refreshButton,
         allowedMentions: {
           repliedUser: false,
         },
@@ -45,7 +43,6 @@ export class Product extends ProductData {
 
       interaction.editReply({
         embeds: embed,
-        components: refreshButton,
       });
     } catch (e) {
       interaction.editReply({
