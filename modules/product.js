@@ -37,20 +37,6 @@ export class Product extends ProductData {
     }
   }
 
-  async updateEmbed(interaction, sku, country) {
-    try {
-      const embed = await this.createEmbed(sku, country);
-
-      interaction.editReply({
-        embeds: embed,
-      });
-    } catch (e) {
-      interaction.editReply({
-        content: e.message,
-      });
-    }
-  }
-
   sendError(m, message) {
     m.reply({
       content: message,
@@ -70,12 +56,5 @@ export class Product extends ProductData {
     } catch (e) {
       this.sendError(m, e.message);
     }
-  }
-
-  async handleInteraction(interaction) {
-    const [sku, country] = this.getSKUandCountry(
-      interaction.message.embeds[0].data.fields
-    );
-    await this.updateEmbed(interaction, sku, country);
   }
 }
