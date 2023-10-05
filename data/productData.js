@@ -150,15 +150,14 @@ export class ProductData {
       const language = getLanguage(country);
       if (!language) throw Error(`Country **${country}** is not supported`);
 
-      const [snkrsData, nikecomData, goatData, novelshipData] =
-        await Promise.all([
-          getNikeProductData("SNKRS%20Web", sku, country, language),
-          getNikeProductData("Nike.com", sku, country, language),
+      const [nikeProductData, goatData, novelshipData] =
+        await Promise.allSettled([
+          getNikeProductData(sku, country, language),
           getGoatData(sku),
           getNovelshipData(sku),
         ]);
 
-      const data = nikecomData ?? snkrsData;
+      const data = nikeProductData.value;
       if (!data) throw Error(`Product **${sku}** not found in **${country}**`);
 
       const productInfo = this.getProductInfo(data.productInfo, sku);
@@ -185,7 +184,7 @@ export class ProductData {
         productInfo.skus,
         productInfo.availableGtins
       );
-      const links = this.getLinks(sku, goatData, novelshipData);
+      const links = this.getLinks(sku, goatData.value, novelshipData.value);
       const promotion = this.getPromotion(
         productInfo.merchPrice.promoExclusions
       );
