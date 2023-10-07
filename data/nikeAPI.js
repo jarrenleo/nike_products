@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 export const getNikeProductData = async (sku, country, language) => {
   const channels = ["SNKRS Web", "Nike.com", "SNKRS"];
 
