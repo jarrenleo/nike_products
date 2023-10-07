@@ -14,7 +14,7 @@ export class ProductData {
     const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
 
     switch (channel) {
-      case "SNKRS Web":
+      case "SNKRS Web" || "SNKRS":
         return `https://www.nike.com${countryPath}/launch/t/${slug}`;
       case "Nike.com":
         return `https://www.nike.com${countryPath}/t/${slug}/${sku}`;
