@@ -1,6 +1,5 @@
 import { getNikeProductData } from "./nikeAPI.js";
 import { getGoatData } from "./goatAPI.js";
-import { getNovelshipData } from "./novelshipAPI.js";
 import { getLanguage } from "../utilities/helpers.js";
 
 export class ProductData {
@@ -124,7 +123,7 @@ export class ProductData {
     ];
   }
 
-  getLinks(sku, goatData, novelshipData) {
+  getLinks(sku, productType, goatData) {
     const goatResultsData = goatData.results[0]?.data;
     const goatUrl =
       goatData.total_num_results &&
@@ -132,12 +131,12 @@ export class ProductData {
         ? `https://www.goat.com/${goatResultsData.product_type}/${goatResultsData.slug}`
         : `https://www.goat.com/search?query=${sku}`;
 
-    const novelshipUrl =
-      novelshipData?.sku === sku
-        ? `https://novelship.com/${novelshipData.name_slug}`
-        : `https://novelship.com/browse?q=${sku}`;
+    const snkrdunkUrl =
+      productType === "FOOTWEAR"
+        ? `https://snkrdunk.com/en/sneakers/${sku}`
+        : `https://snkrdunk.com/en/search/result?keyword=${sku}`;
 
-    return `[Goat](${goatUrl}) | [Novelship](${novelshipUrl}) | [SNKRDunk](https://snkrdunk.com/en/sneakers/${sku})`;
+    return `[Goat](${goatUrl}) | [SNKRDunk](${snkrdunkUrl})`;
   }
 
   getPromotion(promoData) {
@@ -154,7 +153,6 @@ export class ProductData {
         await Promise.allSettled([
           getNikeProductData(sku, country, language),
           getGoatData(sku),
-          getNovelshipData(sku),
         ]);
 
       const data = nikeProductData.value;
@@ -184,7 +182,11 @@ export class ProductData {
         productInfo.skus,
         productInfo.availableGtins
       );
-      const links = this.getLinks(sku, goatData.value, novelshipData.value);
+      const links = this.getLinks(
+        sku,
+        productInfo.merchProduct.productType,
+        goatData.value
+      );
       const promotion = this.getPromotion(
         productInfo.merchPrice.promoExclusions
       );
