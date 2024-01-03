@@ -9,6 +9,12 @@ export class ProductData {
       : product.find((product) => product.merchProduct.styleColor === sku);
   }
 
+  getName(properties, productContent) {
+    if (!properties.subtitle) return productContent.fullTitle;
+
+    return `${properties.subtitle} '${properties.title}' ${productContent.subtitle}`;
+  }
+
   getURL(channel, sku, country, slug) {
     const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
 
@@ -149,22 +155,24 @@ export class ProductData {
       const language = getLanguage(country);
       if (!language) throw Error(`Country **${country}** is not supported`);
 
-      const [nikeProductData, goatData, novelshipData] =
-        await Promise.allSettled([
-          getNikeProductData(sku, country, language),
-          getGoatData(sku),
-        ]);
+      const [nikeProductData, goatData] = await Promise.allSettled([
+        getNikeProductData(sku, country, language),
+        getGoatData(sku),
+      ]);
 
       const data = nikeProductData.value;
       if (!data) throw Error(`Product **${sku}** not found in **${country}**`);
 
       const productInfo = this.getProductInfo(data.productInfo, sku);
-      const name = productInfo.productContent.fullTitle;
+      const name = this.getName(
+        data.publishedContent.nodes[0].properties,
+        productInfo.productContent
+      );
       const url = this.getURL(
         data.channelName,
         sku,
         country,
-        productInfo.productContent.slug
+        data.publishedContent.properties.seo.slug
       );
       const image = this.getImage(sku);
       const status = this.getStatus(productInfo.merchProduct.status);
