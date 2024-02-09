@@ -6,13 +6,6 @@ export class Product extends ProductData {
     super();
   }
 
-  getSKUandCountry(fields) {
-    const sku = fields[3].value;
-    const country = fields[4].value;
-
-    return [sku, country];
-  }
-
   async createEmbed(sku, country) {
     try {
       const data = await this.getProductData(sku, country);
@@ -22,10 +15,8 @@ export class Product extends ProductData {
     }
   }
 
-  async sendEmbed(m, sku, country) {
+  async sendEmbed(m, embed) {
     try {
-      const embed = await this.createEmbed(sku, country);
-
       m.reply({
         embeds: embed,
         allowedMentions: {
@@ -45,12 +36,13 @@ export class Product extends ProductData {
 
   async handleMessage(m, skus, countries) {
     try {
-      if (!skus.length) throw Error("Missing SKU parameter");
-      if (!countries.length) throw Error("Missing country parameter");
+      if (!skus.length) throw new Error("Missing SKU parameter");
+      if (!countries.length) throw new Error("Missing country parameter");
 
       for (const sku of skus) {
         for (const country of countries) {
-          await this.sendEmbed(m, sku, country);
+          const embed = await this.createEmbed(sku, country);
+          await this.sendEmbed(m, embed);
         }
       }
     } catch (e) {

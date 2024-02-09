@@ -1,20 +1,13 @@
 import { getNikeProductData } from "./nikeAPI.js";
 import { getGoatData } from "./goatAPI.js";
-import { getLanguage } from "../utilities/helpers.js";
+import {
+  getLanguage,
+  getProductInfo,
+  getName,
+  getImage,
+} from "../utilities/helpers.js";
 
 export class ProductData {
-  getProductInfo(product, sku) {
-    return product.length === 1
-      ? product[0]
-      : product.find((product) => product.merchProduct.styleColor === sku);
-  }
-
-  getName(properties, productContent) {
-    if (!properties.subtitle) return productContent.fullTitle;
-
-    return `${properties.subtitle} '${properties.title}' ${productContent.subtitle}`;
-  }
-
   getURL(channel, sku, country, slug) {
     const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
 
@@ -24,13 +17,6 @@ export class ProductData {
       case "Nike.com":
         return `https://www.nike.com${countryPath}/t/${slug}/${sku}`;
     }
-  }
-
-  getImage(sku) {
-    return `https://secure-images.nike.com/is/image/DotCom/${sku.replace(
-      "-",
-      "_"
-    )}`;
   }
 
   getIndicator(indicator) {
@@ -153,7 +139,7 @@ export class ProductData {
   async getProductData(sku, country) {
     try {
       const language = getLanguage(country);
-      if (!language) throw Error(`Country **${country}** is not supported`);
+      if (!language) throw new Error(`Country **${country}** is not supported`);
 
       const [nikeProductData, goatData] = await Promise.allSettled([
         getNikeProductData(sku, country, language),
@@ -161,20 +147,20 @@ export class ProductData {
       ]);
 
       const data = nikeProductData.value;
-      if (!data) throw Error(`Product **${sku}** not found in **${country}**`);
+      if (!data)
+        throw new Error(`Product **${sku}** not found in **${country}**`);
 
-      const productInfo = this.getProductInfo(data.productInfo, sku);
-      const name = this.getName(
-        data.publishedContent.nodes[0].properties,
-        productInfo.productContent
-      );
+      const productInfo = getProductInfo(data.productInfo, sku);
+      const name =
+        getName(data.channelName, country, sku, data.publishedContent) ||
+        productInfo.productContent.fullTitle;
       const url = this.getURL(
         data.channelName,
         sku,
         country,
         data.publishedContent.properties.seo.slug
       );
-      const image = this.getImage(sku);
+      const image = getImage(sku);
       const status = this.getStatus(productInfo.merchProduct.status);
       const method = this.getMethod(productInfo);
       const cartLimit = productInfo.merchProduct.quantityLimit;

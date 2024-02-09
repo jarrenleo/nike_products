@@ -15,10 +15,8 @@ export class Calendar extends CalendarData {
     }
   }
 
-  async sendEmbed(m, country) {
+  async sendEmbed(m, embed) {
     try {
-      const embed = await this.createEmbed(country);
-
       m.reply({
         embeds: embed,
         allowedMentions: {
@@ -38,10 +36,11 @@ export class Calendar extends CalendarData {
 
   async handleMessage(m, countries) {
     try {
-      if (!countries.length) throw Error("Missing country parameter");
+      if (!countries.length) throw new Error("Missing country parameter");
 
       for (const country of countries) {
-        await this.sendEmbed(m, country);
+        const embed = await this.createEmbed(country);
+        await this.sendEmbed(m, embed);
       }
     } catch (e) {
       this.sendError(m, e.message);

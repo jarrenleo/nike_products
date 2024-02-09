@@ -1,0 +1,48 @@
+import { randomUUID } from "crypto";
+import {
+  getLanguage,
+  getProductInfo,
+  getName,
+  getImage,
+} from "../utilities/helpers.js";
+import { getNikeProductData } from "./nikeAPI.js";
+
+export class CheckoutUrlData {
+  async getCheckoutUrlData(sku, country, size) {
+    try {
+      const language = getLanguage(country);
+      if (!language) throw new Error(`Country **${country}** is not supported`);
+
+      const data = await getNikeProductData(sku, country, language);
+      if (!data)
+        throw new Error(`Product **${sku}** not found in **${country}**`);
+      if (data.channelName !== "SNKRS Web")
+        throw new Error("Cannot generate checkout url for Non-SNKRS product");
+
+      const productInfo = getProductInfo(data.productInfo, sku);
+
+      const skuId = productInfo.skus.find((sku) => sku.nikeSize === size)?.id;
+      if (!skuId)
+        throw new Error(`Size **${size}** not found in **${country}**`);
+
+      const name =
+        getName(data.channelName, country, sku, data.publishedContent) ||
+        productInfo.productContent.fullTitle;
+      const image = getImage(sku);
+      const checkoutId = randomUUID();
+      const launchId = productInfo.launchView.id;
+      const slug = data.publishedContent.properties.seo.slug;
+      const url = `[Click Me](https://gs.nike.com/?checkoutId=${checkoutId}&launchId=${launchId}&skuId=${skuId}&country=${country}&locale=${language}&appId=com.nike.commerce.snkrs.web&returnUrl=https://www.nike.com/${country.toLowerCase()}/launch/t/${slug}/)`;
+
+      return {
+        name,
+        image,
+        country,
+        size,
+        url,
+      };
+    } catch (e) {
+      throw Error(e.message);
+    }
+  }
+}

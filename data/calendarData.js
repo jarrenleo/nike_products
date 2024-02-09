@@ -96,7 +96,7 @@ export class CalendarData {
   async getCalendarData(country) {
     try {
       const language = getLanguage(country);
-      if (!language) throw Error(`Country **${country}** is not supported`);
+      if (!language) throw new Error(`Country **${country}** is not supported`);
 
       const calendarData = await getNikeCalendarData(
         `https://api.nike.com/product_feed/threads/v3/?count=100&filter=marketplace(${country})&filter=language(${language})&filter=upcoming(true)&filter=channelName(Nike.com)&filter=productInfo.merchProduct.status(ACTIVE)&filter=exclusiveAccess(true,false)&sort=productInfo.merchProduct.commerceStartDateAsc`
@@ -106,7 +106,7 @@ export class CalendarData {
       const upcomingProducts = this.sortProducts(upcomingIndex, calendarData);
 
       if (!Object.keys(upcomingProducts).length)
-        throw Error(`No notable upcoming releases found in **${country}**`);
+        throw new Error(`No notable upcoming releases found in **${country}**`);
 
       const embedFields = this.generateEmbedFields(upcomingProducts);
 

@@ -2,11 +2,13 @@ import { config } from "dotenv";
 import { Client, GatewayIntentBits, Events } from "discord.js";
 import { Product } from "./modules/product.js";
 import { Calendar } from "./modules/calendar.js";
+import { CheckoutUrl } from "./modules/checkoutUrl.js";
 config();
 
 class Discord {
   product = new Product();
   calendar = new Calendar();
+  checkoutUrl = new CheckoutUrl();
 
   constructor() {
     this.discord = this.initDiscord();
@@ -19,6 +21,7 @@ class Discord {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.DirectMessages,
       ],
     });
     client.login(process.env.DISCORD_TOKEN);
@@ -33,9 +36,10 @@ class Discord {
     const params = content.split(" ");
     for (const param of params) {
       if (!param) continue;
-      param.length > 2
-        ? skus.push(param.toUpperCase())
-        : countries.push(param.toUpperCase());
+
+      param.length === 2
+        ? countries.push(param.toUpperCase())
+        : skus.push(param.toUpperCase());
     }
 
     return [skus, countries];
@@ -55,6 +59,16 @@ class Discord {
         const [_, countries] = this.getParams(m.content.slice(9).trimStart());
 
         await this.calendar.handleMessage(m, countries);
+      }
+
+      if (m.content.startsWith("!checkout")) {
+        const [sku, country, size] = m.content.slice(9).trimStart().split(" ");
+        await this.checkoutUrl.handleMessage(
+          m,
+          sku.toUpperCase(),
+          country.toUpperCase(),
+          size.toUpperCase()
+        );
       }
     });
   }

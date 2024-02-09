@@ -1,3 +1,52 @@
+export function getProductInfo(product, sku) {
+  return product.length === 1
+    ? product[0]
+    : product.find((product) => product.merchProduct.styleColor === sku);
+}
+
+export function getName(channel, country, sku, publishedContent) {
+  if (channel !== "SNKRS Web") return;
+
+  const title = publishedContent.properties.seo.title;
+
+  if (title.includes(sku)) {
+    let startSliceIndex = 0;
+    if (country === "JP" && title.includes("NIKE公式")) startSliceIndex = 8;
+
+    const endSliceIndex = title.indexOf(sku) - 2;
+
+    return title.slice(startSliceIndex, endSliceIndex);
+  }
+
+  const numOfProducts = publishedContent.properties.products.length;
+
+  if (numOfProducts === 1) {
+    const altText = publishedContent.nodes.at(-1).properties.altText;
+    if (!altText) return;
+
+    const endSliceIndex = altText.toLowerCase().indexOf("release") - 1;
+
+    return altText.slice(0, endSliceIndex);
+  }
+
+  const numOfNodes = publishedContent.nodes.length;
+
+  for (let i = numOfNodes - 1; i >= numOfNodes - numOfProducts; --i) {
+    const properties = publishedContent.nodes[i].properties;
+    if (!properties.internalName) continue;
+
+    if (properties.internalName.includes(sku))
+      return `${properties.subtitle} '${properties.title}'`;
+  }
+}
+
+export function getImage(sku) {
+  return `https://secure-images.nike.com/is/image/DotCom/${sku.replace(
+    "-",
+    "_"
+  )}`;
+}
+
 export const getLanguage = (marketplace) => {
   const marketplaceMap = {
     PT: "en-GB",

@@ -94,3 +94,33 @@ export const calendarEmbed = ([country, embedFields]) => {
     },
   ];
 };
+
+export const checkoutUrlEmbed = ({ name, image, country, size, url }) => {
+  return [
+    {
+      color: 0x868e96,
+      title: name,
+      thumbnail: {
+        url: image,
+      },
+      fields: [
+        {
+          name: "Country",
+          value: country,
+          inline: true,
+        },
+        {
+          name: "Size",
+          value: size,
+          inline: true,
+        },
+        {
+          name: "Checkout URL",
+          value: url,
+          inline: true,
+        },
+      ],
+      timestamp: new Date(Date.now()).toISOString(),
+    },
+  ];
+};
