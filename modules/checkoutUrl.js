@@ -35,9 +35,9 @@ export class CheckoutUrl extends CheckoutUrlData {
 
   async handleMessage(m, sku, country, size) {
     try {
-      if (!sku.length) throw new Error("Missing SKU parameter");
-      if (!country.length) throw new Error("Missing country parameter");
-      if (!size.length) throw new Error("Missing size parameter");
+      if (!sku) throw new Error("Missing SKU parameter");
+      if (!country) throw new Error("Missing country parameter");
+      if (!size) throw new Error("Missing size parameter");
 
       const embed = await this.createEmbed(sku, country, size);
       await this.sendEmbed(m, embed);

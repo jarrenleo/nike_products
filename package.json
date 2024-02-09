@@ -1,10 +1,11 @@
 {
   "name": "nike-products",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Discord bot that looks up Nike products",
   "main": "app.js",
   "type": "module",
   "scripts": {
+    "dev": "nodemon app.js",
     "start": "node app.js"
   },
   "author": "jaleo",
