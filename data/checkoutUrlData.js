@@ -21,6 +21,10 @@ export class CheckoutUrlData {
 
       const productInfo = getProductInfo(data.productInfo, sku);
 
+      const launchId = productInfo.launchView?.id;
+      if (!launchId)
+        throw new Error(`Product **${sku}** is not an upcoming launch product`);
+
       const skuId = productInfo.skus.find((sku) => sku.nikeSize === size)?.id;
       if (!skuId)
         throw new Error(`Size **${size}** not found in **${country}**`);
@@ -30,7 +34,6 @@ export class CheckoutUrlData {
         productInfo.productContent.fullTitle;
       const image = getImage(sku);
       const checkoutId = randomUUID();
-      const launchId = productInfo.launchView.id;
       const slug = data.publishedContent.properties.seo.slug;
       const url = `[Click Me](https://gs.nike.com/?checkoutId=${checkoutId}&launchId=${launchId}&skuId=${skuId}&country=${country}&locale=${language}&appId=com.nike.commerce.snkrs.web&returnUrl=https://www.nike.com/${country.toLowerCase()}/launch/t/${slug}/)`;
 
