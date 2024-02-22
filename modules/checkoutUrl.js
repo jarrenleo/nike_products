@@ -39,7 +39,11 @@ export class CheckoutUrl extends CheckoutUrlData {
       if (!country) throw new Error("Missing country parameter");
       if (!size) throw new Error("Missing size parameter");
 
-      const embed = await this.createEmbed(sku, country, size);
+      const embed = await this.createEmbed(
+        sku.toUpperCase(),
+        country.toUpperCase(),
+        size.toUpperCase()
+      );
       await this.sendEmbed(m, embed);
     } catch (e) {
       this.sendError(m, e.message);
