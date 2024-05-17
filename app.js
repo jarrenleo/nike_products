@@ -63,7 +63,7 @@ class Discord {
 
       if (m.content.startsWith("!checkout")) {
         const [sku, country, size] = m.content.slice(9).trimStart().split(" ");
-        await this.checkoutUrl.handleMessage(m, sku, country, size);
+        await this.checkoutUrl.handleMessage(m, sku, country, sizes);
       }
     });
   }
