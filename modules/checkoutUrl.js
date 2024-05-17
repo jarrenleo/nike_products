@@ -33,18 +33,22 @@ export class CheckoutUrl extends CheckoutUrlData {
     });
   }
 
-  async handleMessage(m, sku, country, size) {
+  async handleMessage(m, sku, country, sizes) {
     try {
       if (!sku) throw new Error("Missing SKU parameter");
       if (!country) throw new Error("Missing country parameter");
-      if (!size) throw new Error("Missing size parameter");
+      if (!sizes) throw new Error("Missing size parameter");
 
-      const embed = await this.createEmbed(
-        sku.toUpperCase(),
-        country.toUpperCase(),
-        size.toUpperCase()
-      );
-      await this.sendEmbed(m, embed);
+      const sizeArray = sizes.split(",");
+
+      for (const size of sizeArray) {
+        const embed = await this.createEmbed(
+          sku.toUpperCase(),
+          country.toUpperCase(),
+          size.trim().toUpperCase()
+        );
+        await this.sendEmbed(m, embed);
+      }
     } catch (e) {
       this.sendError(m, e.message);
     }
