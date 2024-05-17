@@ -45,7 +45,7 @@ export class CheckoutUrl extends CheckoutUrlData {
         const embed = await this.createEmbed(
           sku.toUpperCase(),
           country.toUpperCase(),
-          size.trim().toUpperCase()
+          size.toUpperCase()
         );
         await this.sendEmbed(m, embed);
       }
