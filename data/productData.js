@@ -151,9 +151,13 @@ export class ProductData {
         throw new Error(`Product **${sku}** not found in **${country}**`);
 
       const productInfo = getProductInfo(data.productInfo, sku);
-      const name =
-        getName(data.channelName, country, sku, data.publishedContent) ||
-        productInfo.productContent.fullTitle;
+
+      let name = productInfo.productContent.fullTitle;
+      if (channel === "SNKRS Web")
+        name =
+          extractPublishedName(country, sku, data.publishedContent) ||
+          productInfo.productContent.fullTitle;
+
       const url = this.getURL(
         data.channelName,
         sku,
