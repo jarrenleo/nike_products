@@ -153,7 +153,7 @@ export class ProductData {
       const productInfo = getProductInfo(data.productInfo, sku);
 
       let name = productInfo.productContent.fullTitle;
-      if (channel === "SNKRS Web")
+      if (data.channelName === "SNKRS Web")
         name =
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
