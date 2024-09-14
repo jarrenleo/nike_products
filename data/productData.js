@@ -155,7 +155,7 @@ export class ProductData {
       let name = productInfo.productContent.fullTitle;
       if (channel === "SNKRS Web")
         name =
-          extractPublishedName(country, sku, data.publishedContent) ||
+          getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
 
       const url = this.getURL(
