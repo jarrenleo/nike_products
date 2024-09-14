@@ -4,40 +4,29 @@ export function getProductInfo(product, sku) {
     : product.find((product) => product.merchProduct.styleColor === sku);
 }
 
-export function getName(channel, country, sku, publishedContent) {
-  if (channel !== "SNKRS Web") return;
+export function getName(country, sku, publishedContent) {
+  let publishedName;
+  const title = publishedContent.properties.coverCard.title;
+  const subtitle = publishedContent.properties.coverCard.subtitle;
 
-  const title = publishedContent.properties.seo.title;
+  if (title && subtitle) {
+    publishedName = `${subtitle} '${title}'`;
+  } else {
+    const seoTitle = publishedContent.properties.seo.title;
+    if (!seoTitle.includes(`(${sku})`)) return;
 
-  if (title.includes(sku)) {
-    let startSliceIndex = 0;
-    if (country === "JP" && title.includes("NIKE公式")) startSliceIndex = 8;
+    let startIndex = 0;
+    if (country === "FR") startIndex = 21;
 
-    const endSliceIndex = title.indexOf(sku) - 2;
+    let indexToDeduct = 2;
+    if (country === "KR") indexToDeduct = 1;
 
-    return title.slice(startSliceIndex, endSliceIndex);
+    const endIndex = seoTitle.indexOf(sku) - indexToDeduct;
+
+    publishedName = seoTitle.slice(startIndex, endIndex);
   }
 
-  const numOfProducts = publishedContent.properties.products.length;
-
-  if (numOfProducts === 1) {
-    const altText = publishedContent.nodes.at(-1).properties.altText;
-    if (!altText) return;
-
-    const endSliceIndex = altText.toLowerCase().indexOf("release") - 1;
-
-    return altText.slice(0, endSliceIndex);
-  }
-
-  const numOfNodes = publishedContent.nodes.length;
-
-  for (let i = numOfNodes - 1; i >= numOfNodes - numOfProducts; --i) {
-    const properties = publishedContent.nodes[i].properties;
-    if (!properties.internalName) continue;
-
-    if (properties.internalName.includes(sku))
-      return `${properties.subtitle} '${properties.title}'`;
-  }
+  return publishedName;
 }
 
 export function getImage(sku) {
