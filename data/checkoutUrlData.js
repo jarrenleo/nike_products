@@ -29,9 +29,11 @@ export class CheckoutUrlData {
       if (!skuId)
         throw new Error(`Size **${size}** not found in **${country}**`);
 
-      const name =
-        getName(data.channelName, country, sku, data.publishedContent) ||
-        productInfo.productContent.fullTitle;
+      let name = productInfo.productContent.fullTitle;
+      if (data.channelName === "SNKRS Web")
+        name =
+          getName(country, sku, data.publishedContent) ||
+          productInfo.productContent.fullTitle;
       const image = getImage(sku);
       const checkoutId = randomUUID();
       const slug = data.publishedContent.properties.seo.slug;
