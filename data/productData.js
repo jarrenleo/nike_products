@@ -125,10 +125,12 @@ export class ProductData {
 
     const snkrdunkUrl =
       productType === "FOOTWEAR"
-        ? `https://snkrdunk.com/en/sneakers/${sku}`
-        : `https://snkrdunk.com/en/search/result?keyword=${sku}`;
+        ? `https://snkrdunk.com/products/${sku}`
+        : `https://snkrdunk.com/search/article/?keywords=${sku}`;
 
-    return `[Goat](${goatUrl}) | [SNKRDunk](${snkrdunkUrl})`;
+    const kreamUrl = `https://kream.co.kr/search?keyword=${sku}`;
+
+    return `[Goat](${goatUrl}) | [SNKRDunk](${snkrdunkUrl}) | [Kream](${kreamUrl})`;
   }
 
   getPromotion(promoData) {
