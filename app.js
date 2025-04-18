@@ -58,7 +58,7 @@ class Discord {
       "POOP-PLUGS",
     ];
 
-    return m.member.roles.cache.some((role) =>
+    return m.member?.roles.cache.some((role) =>
       authorisedRoles.includes(role.name)
     );
   }
