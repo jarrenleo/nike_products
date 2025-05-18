@@ -1,5 +1,6 @@
 export const getNikeProductData = async (sku, country, language) => {
   const channels = ["SNKRS Web", "Nike.com", "SNKRS"];
+  if (country === "AU") country = "ASTLA";
 
   for (const channel of channels) {
     const response = await fetch(

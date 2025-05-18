@@ -1,13 +1,13 @@
 import { config } from "dotenv";
 import { Client, GatewayIntentBits, Events } from "discord.js";
 import { Product } from "./modules/product.js";
-import { Calendar } from "./modules/calendar.js";
+// import { Calendar } from "./modules/calendar.js";
 import { CheckoutUrl } from "./modules/checkoutUrl.js";
 config();
 
 class Discord {
   product = new Product();
-  calendar = new Calendar();
+  // calendar = new Calendar();
   checkoutUrl = new CheckoutUrl();
 
   constructor() {
