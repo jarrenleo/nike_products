@@ -1,5 +1,4 @@
 import { getNikeProductData } from "./nikeAPI.js";
-import { getGoatData } from "./goatAPI.js";
 import {
   getLanguage,
   getProductInfo,
@@ -115,14 +114,8 @@ export class ProductData {
     ];
   }
 
-  getLinks(sku, productType, goatData) {
-    const goatResultsData = goatData.results[0]?.data;
-    const goatUrl =
-      goatData.total_num_results &&
-      goatResultsData.sku.replace(" ", "-") === sku
-        ? `https://www.goat.com/${goatResultsData.product_type}/${goatResultsData.slug}`
-        : `https://www.goat.com/search?query=${sku}`;
-
+  getLinks(sku, productType) {
+    const goatUrl = `https://www.goat.com/search?query=${sku}`;
     const snkrdunkUrl =
       productType === "FOOTWEAR"
         ? `https://snkrdunk.com/products/${sku}`
@@ -143,12 +136,7 @@ export class ProductData {
       const language = getLanguage(country);
       if (!language) throw new Error(`Country **${country}** is not supported`);
 
-      const [nikeProductData, goatData] = await Promise.allSettled([
-        getNikeProductData(sku, country, language),
-        getGoatData(sku),
-      ]);
-
-      const data = nikeProductData.value;
+      const data = await getNikeProductData(sku, country, language);
       if (!data)
         throw new Error(`Product **${sku}** not found in **${country}**`);
 
@@ -182,11 +170,7 @@ export class ProductData {
         productInfo.skus,
         productInfo.availableGtins
       );
-      const links = this.getLinks(
-        sku,
-        productInfo.merchProduct.productType,
-        goatData.value
-      );
+      const links = this.getLinks(sku, productInfo.merchProduct.productType);
       const promotion = this.getPromotion(
         productInfo.merchPrice.promoExclusions
       );
