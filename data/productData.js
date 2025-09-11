@@ -154,7 +154,8 @@ export class ProductData {
         country,
         data.publishedContent.properties.seo.slug
       );
-      const image = getImage(sku);
+      const image =
+        data.publishedContent.nodes[0].nodes[0].properties.squarishURL;
       const status = this.getStatus(productInfo.merchProduct.status);
       const method = this.getMethod(productInfo);
       const cartLimit = productInfo.merchProduct.quantityLimit;
