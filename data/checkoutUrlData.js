@@ -1,5 +1,10 @@
 import { randomUUID } from "crypto";
-import { getLanguage, getProductInfo, getName } from "../utilities/helpers.js";
+import {
+  getLanguage,
+  getProductInfo,
+  getName,
+  getImage,
+} from "../utilities/helpers.js";
 import { getNikeProductData } from "./nikeAPI.js";
 
 export class CheckoutUrlData {
@@ -29,8 +34,8 @@ export class CheckoutUrlData {
         name =
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
-      const image =
-        data.publishedContent.nodes[0].nodes[0].properties.squarishURL;
+      const image = getImage(data.publishedContent.nodes, sku);
+      data.publishedContent.nodes[0].nodes[0].properties.squarishURL;
       const checkoutId = randomUUID();
       const slug = data.publishedContent.properties.seo.slug;
       const url = `[Click Me](https://gs.nike.com/?checkoutId=${checkoutId}&launchId=${launchId}&skuId=${skuId}&country=${country}&locale=${language}&appId=com.nike.commerce.snkrs.web&returnUrl=https://www.nike.com/${country.toLowerCase()}/launch/t/${slug}/)`;

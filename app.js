@@ -55,16 +55,16 @@ class Discord {
         await this.product.handleMessage(m, skus, countries);
       }
 
+      if (m.content.startsWith("!checkout")) {
+        const [sku, country, sizes] = m.content.slice(9).trimStart().split(" ");
+        await this.checkoutUrl.handleMessage(m, sku, country, sizes);
+      }
+
       // if (m.content.startsWith("!calendar")) {
       //   const [_, countries] = this.getParams(m.content.slice(9).trimStart());
 
       //   await this.calendar.handleMessage(m, countries);
       // }
-
-      if (m.content.startsWith("!checkout")) {
-        const [sku, country, sizes] = m.content.slice(9).trimStart().split(" ");
-        await this.checkoutUrl.handleMessage(m, sku, country, sizes);
-      }
     });
   }
 }

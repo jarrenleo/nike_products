@@ -1,6 +1,6 @@
 {
   "name": "nike-products",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Discord bot that looks up Nike products",
   "main": "app.js",
   "type": "module",

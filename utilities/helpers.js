@@ -29,6 +29,15 @@ export function getName(country, sku, publishedContent) {
   return publishedName;
 }
 
+export function getImage(nodes, sku) {
+  const imageNode = nodes.find((node) =>
+    node.properties.internalName?.includes(sku)
+  );
+  if (!imageNode) return nodes[0].nodes[0].properties.squarishURL;
+
+  return imageNode.properties.squarishURL;
+}
+
 export const getLanguage = (marketplace) => {
   const marketplaceMap = {
     PT: "en-GB",

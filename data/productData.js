@@ -1,5 +1,10 @@
 import { getNikeProductData } from "./nikeAPI.js";
-import { getLanguage, getProductInfo, getName } from "../utilities/helpers.js";
+import {
+  getLanguage,
+  getProductInfo,
+  getName,
+  getImage,
+} from "../utilities/helpers.js";
 
 export class ProductData {
   getURL(channel, sku, country, slug) {
@@ -149,8 +154,7 @@ export class ProductData {
         country,
         data.publishedContent.properties.seo.slug
       );
-      const image =
-        data.publishedContent.nodes[0].nodes[0].properties.squarishURL;
+      const image = getImage(data.publishedContent.nodes, sku);
       const status = this.getStatus(productInfo.merchProduct.status);
       const method = this.getMethod(productInfo);
       const cartLimit = productInfo.merchProduct.quantityLimit;
