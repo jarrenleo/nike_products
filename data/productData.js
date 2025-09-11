@@ -1,10 +1,5 @@
 import { getNikeProductData } from "./nikeAPI.js";
-import {
-  getLanguage,
-  getProductInfo,
-  getName,
-  getImage,
-} from "../utilities/helpers.js";
+import { getLanguage, getProductInfo, getName } from "../utilities/helpers.js";
 
 export class ProductData {
   getURL(channel, sku, country, slug) {

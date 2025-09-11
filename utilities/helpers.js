@@ -29,13 +29,6 @@ export function getName(country, sku, publishedContent) {
   return publishedName;
 }
 
-export function getImage(sku) {
-  return `https://secure-images.nike.com/is/image/DotCom/${sku.replace(
-    "-",
-    "_"
-  )}`;
-}
-
 export const getLanguage = (marketplace) => {
   const marketplaceMap = {
     PT: "en-GB",
