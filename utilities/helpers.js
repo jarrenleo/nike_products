@@ -6,14 +6,14 @@ export function getProductInfo(product, sku) {
 
 export function getName(country, sku, publishedContent) {
   let publishedName;
-  const title = publishedContent.properties.coverCard.title;
-  const subtitle = publishedContent.properties.coverCard.subtitle;
+  const title = publishedContent.properties.coverCard?.title;
+  const subtitle = publishedContent.properties.coverCard?.subtitle;
 
   if (title && subtitle) {
     publishedName = `${subtitle} '${title}'`;
   } else {
-    const seoTitle = publishedContent.properties.seo.title;
-    if (!seoTitle.includes(`(${sku})`)) return;
+    const seoTitle = publishedContent.properties.seo?.title;
+    if (!seoTitle || !seoTitle.includes(`(${sku})`)) return;
 
     let startIndex = 0;
     if (country === "FR") startIndex = 21;

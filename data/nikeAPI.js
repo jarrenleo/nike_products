@@ -16,18 +16,3 @@ export const getNikeProductData = async (sku, country, language) => {
 
   return null;
 };
-
-export const getNikeCalendarData = async (url, calendarData = []) => {
-  const response = await fetch(url);
-  const data = await response.json();
-
-  calendarData.push(...data.objects);
-
-  if (data.pages.next)
-    return await getNikeCalendarData(
-      `https://api.nike.com${data.pages.next}`,
-      calendarData
-    );
-
-  return calendarData;
-};
