@@ -16,7 +16,7 @@ export class CheckoutUrlData {
       const data = await getNikeProductData(sku, country, language);
       if (!data)
         throw new Error(`Product **${sku}** not found in **${country}**`);
-      if (data.channelName !== "SNKRS Web")
+      if (data.channelName !== "UNKNOWN" && data.channelName !== "SNKRS Web")
         throw new Error("Cannot generate checkout url for Non-SNKRS product");
 
       const productInfo = getProductInfo(data.productInfo, sku);
@@ -30,7 +30,7 @@ export class CheckoutUrlData {
         throw new Error(`Size **${size}** not found in **${country}**`);
 
       let name = productInfo.productContent.fullTitle;
-      if (data.channelName === "SNKRS Web")
+      if (data.channelName === "UNKNOWN" || data.channelName === "SNKRS Web")
         name =
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;

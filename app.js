@@ -1,13 +1,11 @@
 import { config } from "dotenv";
 import { Client, GatewayIntentBits, Events } from "discord.js";
 import { Product } from "./modules/product.js";
-// import { Calendar } from "./modules/calendar.js";
 import { CheckoutUrl } from "./modules/checkoutUrl.js";
 config();
 
 class Discord {
   product = new Product();
-  // calendar = new Calendar();
   checkoutUrl = new CheckoutUrl();
 
   constructor() {
@@ -59,12 +57,6 @@ class Discord {
         const [sku, country, sizes] = m.content.slice(9).trimStart().split(" ");
         await this.checkoutUrl.handleMessage(m, sku, country, sizes);
       }
-
-      // if (m.content.startsWith("!calendar")) {
-      //   const [_, countries] = this.getParams(m.content.slice(9).trimStart());
-
-      //   await this.calendar.handleMessage(m, countries);
-      // }
     });
   }
 }

@@ -11,7 +11,9 @@ export class ProductData {
     const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
 
     switch (channel) {
-      case "SNKRS Web" || "SNKRS":
+      case "UNKNOWN":
+      case "SNKRS Web":
+      case "SNKRS":
         return `https://www.nike.com${countryPath}/launch/t/${slug}`;
       case "Nike.com":
         return `https://www.nike.com${countryPath}/t/${slug}/${sku}`;
@@ -143,7 +145,7 @@ export class ProductData {
       const productInfo = getProductInfo(data.productInfo, sku);
 
       let name = productInfo.productContent.fullTitle;
-      if (data.channelName === "SNKRS Web")
+      if (data.channelName === "UNKNOWN" || data.channelName === "SNKRS Web")
         name =
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
