@@ -31,11 +31,13 @@ export function getName(country, sku, publishedContent) {
 
 export function getImage(nodes, sku) {
   const imageNode = nodes.find((node) =>
-    node.properties.internalName?.includes(sku)
+    node.properties.internalName?.includes(sku),
   );
-  if (!imageNode) return nodes[0].nodes[0].properties.squarishURL;
 
-  return imageNode.properties.squarishURL;
+  return (
+    nodes[0].nodes?.at(0).properties.squarishURL ||
+    imageNode?.properties.squarishURL
+  );
 }
 
 export const getLanguage = (marketplace) => {
