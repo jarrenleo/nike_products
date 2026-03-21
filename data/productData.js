@@ -11,9 +11,9 @@ export class ProductData {
     const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
 
     switch (channel) {
-      case "UNKNOWN":
       case "SNKRS Web":
       case "SNKRS":
+      case "UNKNOWN":
         return `https://www.nike.com${countryPath}/launch/t/${slug}`;
       case "Nike.com":
         return `https://www.nike.com${countryPath}/t/${slug}/${sku}`;
@@ -59,7 +59,7 @@ export class ProductData {
   getPrice(price) {
     if (price.discounted)
       return `${price.currency} ${price.currentPrice.toLocaleString(
-        "en-US"
+        "en-US",
       )} ~~${price.fullPrice.toLocaleString("en-US")}~~`;
 
     return `${price.currency} ${price.fullPrice.toLocaleString("en-US")}`;
@@ -90,7 +90,7 @@ export class ProductData {
         ? sizesAndStockLevels.push(
             `${metric}${sku.nikeSize} (${
               matchedGtin.level
-            }) ${this.getIndicator(matchedGtin.level)}`
+            }) ${this.getIndicator(matchedGtin.level)}`,
           )
         : sizesAndStockLevels.push(`${metric}${sku.nikeSize} (OOS) 🔴`);
     }
@@ -145,7 +145,7 @@ export class ProductData {
       const productInfo = getProductInfo(data.productInfo, sku);
 
       let name = productInfo.productContent.fullTitle;
-      if (data.channelName === "UNKNOWN" || data.channelName === "SNKRS Web")
+      if (data.channelName === "SNKRS Web" || data.channelName === "UNKNOWN")
         name =
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
@@ -154,7 +154,7 @@ export class ProductData {
         data.channelName,
         sku,
         country,
-        data.publishedContent.properties.seo.slug
+        data.publishedContent.properties.seo.slug,
       );
       const image = getImage(data.publishedContent.nodes, sku);
       const status = this.getStatus(productInfo.merchProduct.status);
@@ -165,16 +165,16 @@ export class ProductData {
       const launchDateAndTime =
         Date.parse(
           productInfo.launchView?.startEntryDate ??
-            productInfo.merchProduct.commerceStartDate
+            productInfo.merchProduct.commerceStartDate,
         ) / 1000;
       const sizesAndStockLevels = this.getSizesAndStockLevels(
         productInfo.merchProduct.productType,
         productInfo.skus,
-        productInfo.availableGtins
+        productInfo.availableGtins,
       );
       const links = this.getLinks(sku, productInfo.merchProduct.productType);
       const promotion = this.getPromotion(
-        productInfo.merchPrice.promoExclusions
+        productInfo.merchPrice.promoExclusions,
       );
 
       return [
