@@ -8,7 +8,7 @@ import {
 
 export class ProductData {
   getURL(channel, sku, country, slug) {
-    const countryPath = country !== "US" ? `/${country.toLowerCase()}` : "";
+    const countryPath = country === "US" ? "" : `/${country.toLowerCase()}`;
 
     switch (channel) {
       case "SNKRS Web":
@@ -118,14 +118,14 @@ export class ProductData {
 
   getLinks(sku, productType) {
     const goatUrl = `https://www.goat.com/search?query=${sku}`;
+    const stockXUrl = `https://stockx.com/search?s=${sku}`;
     const snkrdunkUrl =
       productType === "FOOTWEAR"
         ? `https://snkrdunk.com/products/${sku}`
         : `https://snkrdunk.com/search/article/?keywords=${sku}`;
-
     const kreamUrl = `https://kream.co.kr/search?keyword=${sku}`;
 
-    return `[Goat](${goatUrl}) | [SNKRDunk](${snkrdunkUrl}) | [Kream](${kreamUrl})`;
+    return `[Goat](${goatUrl}) | [StockX](${stockXUrl}) | [SNKRDunk](${snkrdunkUrl}) | [Kream](${kreamUrl})`;
   }
 
   getPromotion(promoData) {
@@ -134,7 +134,6 @@ export class ProductData {
   }
 
   async getProductData(sku, country) {
-    try {
       const language = getLanguage(country);
       if (!language) throw new Error(`Country **${country}** is not supported`);
 
@@ -193,8 +192,5 @@ export class ProductData {
         links,
         promotion,
       ];
-    } catch (e) {
-      throw Error(e.message);
-    }
   }
 }

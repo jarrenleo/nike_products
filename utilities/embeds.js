@@ -78,23 +78,6 @@ export const productEmbed = ([
   ];
 };
 
-export const calendarEmbed = ([country, embedFields]) => {
-  return [
-    {
-      color: 0x868e96,
-      title: "Nike Webstore Calendar",
-      fields: [
-        {
-          name: "Country",
-          value: country,
-        },
-        ...embedFields,
-      ],
-      timestamp: new Date(Date.now()).toISOString(),
-    },
-  ];
-};
-
 export const checkoutUrlEmbed = ({ name, image, country, size, url }) => {
   return [
     {

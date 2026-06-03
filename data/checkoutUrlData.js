@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import {
   getLanguage,
   getProductInfo,
@@ -9,7 +9,6 @@ import { getNikeProductData } from "./nikeAPI.js";
 
 export class CheckoutUrlData {
   async getCheckoutUrlData(sku, country, size) {
-    try {
       const language = getLanguage(country);
       if (!language) throw new Error(`Country **${country}** is not supported`);
 
@@ -35,7 +34,6 @@ export class CheckoutUrlData {
           getName(country, sku, data.publishedContent) ||
           productInfo.productContent.fullTitle;
       const image = getImage(data.publishedContent.nodes, sku);
-      data.publishedContent.nodes[0].nodes[0].properties.squarishURL;
       const checkoutId = randomUUID();
       const slug = data.publishedContent.properties.seo.slug;
       const url = `[Click Me](https://gs.nike.com/?checkoutId=${checkoutId}&launchId=${launchId}&skuId=${skuId}&country=${country}&locale=${language}&appId=com.nike.commerce.snkrs.web&returnUrl=https://www.nike.com/${country.toLowerCase()}/launch/t/${slug}/)`;
@@ -47,8 +45,5 @@ export class CheckoutUrlData {
         size,
         url,
       };
-    } catch (e) {
-      throw Error(e.message);
-    }
   }
 }

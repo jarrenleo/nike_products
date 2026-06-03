@@ -13,7 +13,7 @@ export function getName(country, sku, publishedContent) {
     publishedName = `${subtitle} '${title}'`;
   } else {
     const seoTitle = publishedContent.properties.seo?.title;
-    if (!seoTitle || !seoTitle.includes(`(${sku})`)) return;
+    if (!seoTitle?.includes(`(${sku})`)) return;
 
     let startIndex = 0;
     if (country === "FR") startIndex = 21;
@@ -30,14 +30,14 @@ export function getName(country, sku, publishedContent) {
 }
 
 export function getImage(nodes, sku) {
+  const imageSquarishUrl = nodes[0].nodes?.at(0).properties.squarishURL;
+  if (imageSquarishUrl) return imageSquarishUrl;
+
   const imageNode = nodes.find((node) =>
     node.properties.internalName?.includes(sku),
   );
 
-  return (
-    nodes[0].nodes?.at(0).properties.squarishURL ||
-    imageNode?.properties.squarishURL
-  );
+  return imageNode?.properties.squarishURL || "";
 }
 
 export const getLanguage = (marketplace) => {

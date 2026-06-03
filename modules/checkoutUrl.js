@@ -7,12 +7,8 @@ export class CheckoutUrl extends CheckoutUrlData {
   }
 
   async createEmbed(sku, country, size) {
-    try {
       const data = await this.getCheckoutUrlData(sku, country, size);
       return checkoutUrlEmbed(data);
-    } catch (e) {
-      throw Error(e.message);
-    }
   }
 
   async sendEmbed(m, embed) {

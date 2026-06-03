@@ -7,12 +7,8 @@ export class Product extends ProductData {
   }
 
   async createEmbed(sku, country) {
-    try {
       const data = await this.getProductData(sku, country);
       return productEmbed(data);
-    } catch (e) {
-      throw Error(e.message);
-    }
   }
 
   async sendEmbed(m, embed) {
